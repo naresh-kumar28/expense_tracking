@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-900 transition-colors duration-200;
+  }
+  
+  /* Dark mode settings */
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-500 transition-colors font-medium shadow-sm active:scale-95;
+  }
+  
+  .btn-outline {
+    @apply border border-neutral-300 dark:border-dark-border px-4 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors font-medium;
+  }
+  
+  .btn-danger {
+    @apply bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-400 transition-colors font-medium shadow-sm;
+  }
+
+  .card {
+    @apply bg-white dark:bg-dark-card rounded-xl shadow-sm border border-neutral-100 dark:border-dark-border p-4 transition-colors;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg border border-neutral-200 dark:border-dark-border bg-white dark:bg-neutral-800 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all dark:text-white;
+  }
+}
