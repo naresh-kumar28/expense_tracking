@@ -41,7 +41,8 @@ export default function ResetPassword() {
       const response = await authService.resetPassword({ 
         email, 
         code, 
-        password: formData.password 
+        password: formData.password,
+        confirm_password: formData.confirm_password
       });
       
       if (response.data.success) {
@@ -51,7 +52,9 @@ export default function ResetPassword() {
         }, 3000);
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password');
+      const msg = err.response?.data?.message || 'Failed to reset password';
+      const errors = err.response?.data?.errors;
+      setError(errors ? Object.values(errors).flat()[0] : msg);
       setIsSubmitting(false);
     }
   };
