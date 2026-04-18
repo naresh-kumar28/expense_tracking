@@ -36,6 +36,25 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const verifyOtpLogin = async (data) => {
+    try {
+      const response = await authService.verifyOtp(data);
+      if (response.data.success && response.data.data) {
+        const { tokens, user: userData } = response.data.data;
+        localStorage.setItem('tokens', JSON.stringify(tokens));
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+        return { success: true, message: response.data.message };
+      }
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      return { 
+        success: false, 
+        message: error.response?.data?.message || 'Verification failed.' 
+      };
+    }
+  };
+
   const logout = async () => {
     try {
       const tokens = JSON.parse(localStorage.getItem('tokens'));
@@ -73,6 +92,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     login,
+    verifyOtpLogin,
     logout,
     handleGoogleAuth,
     isAdmin: user?.is_staff || false

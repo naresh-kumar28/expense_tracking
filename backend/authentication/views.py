@@ -77,8 +77,18 @@ def verify_otp(request):
         
         otp.is_used = True
         otp.save()
+
+        tokens = get_tokens_for_user(user)
+        user_data = UserSerializer(user).data
         
-        return Response({"success": True, "message": "Account verified successfully. You can now login."}, status=status.HTTP_200_OK)
+        return Response({
+            "success": True, 
+            "message": "Account verified successfully. You are now logged in.",
+            "data": {
+                "tokens": tokens,
+                "user": user_data
+            }
+        }, status=status.HTTP_200_OK)
     return Response({"success": False, "message": "Validation failed.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])

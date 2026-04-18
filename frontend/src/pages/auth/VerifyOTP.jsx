@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { authService } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import AuthLayout from '../../components/auth/AuthLayout';
 
 export default function VerifyOTP() {
@@ -13,6 +14,7 @@ export default function VerifyOTP() {
   
   const location = useLocation();
   const navigate = useNavigate();
+  const { verifyOtpLogin } = useAuth();
   const inputRefs = useRef([]);
 
   const email = location.state?.email;
@@ -64,23 +66,26 @@ export default function VerifyOTP() {
     setError('');
 
     try {
-      let response;
       if (purpose === 'signup') {
-        response = await authService.verifyOtp({ email, code });
+        const response = await verifyOtpLogin({ email, code });
+        if (response.success) {
+          setSuccess(response.message || 'Account verified successfully.');
+          setTimeout(() => {
+            navigate('/');
+          }, 1500);
+        } else {
+          setError(response.message || 'Verification failed');
+          setIsSubmitting(false);
+        }
       } else {
-        response = await authService.forgotPasswordVerifyOtp({ email, code });
-      }
-
-      if (response.data.success) {
-        setSuccess(response.data.message);
-        setTimeout(() => {
-          if (purpose === 'signup') {
-            navigate('/login');
-          } else {
+        const response = await authService.forgotPasswordVerifyOtp({ email, code });
+        if (response.data.success) {
+          setSuccess(response.data.message);
+          setTimeout(() => {
             // For password reset, go to reset-password page with email and code
             navigate('/reset-password', { state: { email, code } });
-          }
-        }, 1500);
+          }, 1500);
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Verification failed');
