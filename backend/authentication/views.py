@@ -314,8 +314,9 @@ def google_auth(request):
                 }
             }, status=status.HTTP_200_OK)
 
-        except ValueError:
+        except ValueError as e:
             # Invalid token
-            return Response({"success": False, "message": "Invalid Google Token."}, status=status.HTTP_401_UNAUTHORIZED)
+            print(f"Google Auth Error: {str(e)}")
+            return Response({"success": False, "message": f"Invalid Google Token. Error: {str(e)}"}, status=status.HTTP_401_UNAUTHORIZED)
             
     return Response({"success": False, "message": "Validation failed.", "errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
