@@ -190,4 +190,4 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
 # Google Auth
-GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '')
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID', '711481869324-2eo5ql3uvtc3o0pa122f8qeks0415he0.apps.googleusercontent.com')
