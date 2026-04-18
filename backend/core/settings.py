@@ -70,7 +70,10 @@ MIDDLEWARE = [
 ]
 
 # Frontend URL jahan React chal raha hai
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://expense-tracking-alpha-eight.vercel.app",
+]
 
 ROOT_URLCONF = 'core.urls'
 
