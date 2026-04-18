@@ -256,9 +256,18 @@ def google_auth(request):
     if serializer.is_valid():
         token = serializer.validated_data['token']
         try:
-            # Specify the CLIENT_ID of the app that accesses the backend:
-            google_client_id = settings.GOOGLE_CLIENT_ID
-            idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
+            # Support for both Access Tokens (from useGoogleLogin) and ID Tokens (from GoogleLogin)
+            if token.startswith('ya29.'):
+                import requests
+                user_info_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+                response = requests.get(user_info_url, headers={'Authorization': f'Bearer {token}'})
+                if response.status_code != 200:
+                    return Response({"success": False, "message": "Invalid Google Access Token."}, status=status.HTTP_401_UNAUTHORIZED)
+                idinfo = response.json()
+            else:
+                # Specify the CLIENT_ID of the app that accesses the backend:
+                google_client_id = settings.GOOGLE_CLIENT_ID
+                idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), google_client_id)
 
             # Get user info from token
             email = idinfo.get('email')
