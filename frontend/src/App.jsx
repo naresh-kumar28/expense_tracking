@@ -17,8 +17,7 @@ import VerifyOTP from './pages/auth/VerifyOTP';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 
-const GOOGLE_CLIENT_ID = "733332076593-jv547h7hag7v9lav5tuqqj2bic2clr1v.apps.googleusercontent.com";
-
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "711481869324-2eo5ql3uvtc3o0pa122f8qeks0415he0.apps.googleusercontent.com";
 function App() {
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
